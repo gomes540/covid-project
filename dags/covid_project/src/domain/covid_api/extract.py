@@ -24,7 +24,7 @@ class CovidApiExtract:
         }
         return querystring
     
-    def make_http_request(self) -> requests.models.Response:
+    def _make_http_request(self) -> requests.models.Response:
         response = requests.request(
             method=RequestMethod.GET,
             url=self.url,
