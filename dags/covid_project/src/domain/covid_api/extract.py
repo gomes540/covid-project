@@ -39,4 +39,9 @@ class CovidApiExtract:
         api_data_as_df = pd.json_normalize(api_data)
         api_data_as_csv = api_data_as_df.to_csv(index=False)
         return api_data_as_csv
+    
+    def extract_workflow(self):
+        covid_api_response = self.make_http_request()
+        daily_covid_csv = self._http_response_to_csv(covid_api_response)
+        return daily_covid_csv
             
