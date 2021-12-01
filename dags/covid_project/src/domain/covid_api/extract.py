@@ -1,5 +1,5 @@
 import requests
-from src.models.api_extract_cte import ApiConstants
+from src.models.api_extract_cte import ApiConstants, RequestMethod
 
 class CovidApiExtract:
     def __init__(self, date: str, key: str) -> None:
@@ -17,7 +17,19 @@ class CovidApiExtract:
         }
         return headers
     
-    def _build_querystring():
-        pass
+    def _build_querystring(self) -> dict:
+        querystring = {
+            'date':self.date
+        }
+        return querystring
+    
+    def make_http_request(self) -> requests.models.Response:
+        response = requests.request(
+            method=RequestMethod.GET,
+            url=self.url,
+            headers=self.headers,
+            params=self.querystring
+        )
+        return response
         
         
