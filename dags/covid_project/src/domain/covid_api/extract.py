@@ -35,8 +35,8 @@ class CovidApiExtract:
     
     def _http_response_to_csv(self, http_response: requests.models.Response) -> str:
         response_as_dict = http_response.json()
-        daily_cases = response_as_dict["data"]
-        df_daily_cases = pd.json_normalize(daily_cases)
-        csv_daily_cases = df_daily_cases.to_csv(index=False)
-        return csv_daily_cases
-        
+        api_data = response_as_dict["data"]
+        api_data_as_df = pd.json_normalize(api_data)
+        api_data_as_csv = api_data_as_df.to_csv(index=False)
+        return api_data_as_csv
+            
