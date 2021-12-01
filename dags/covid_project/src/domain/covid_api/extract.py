@@ -45,7 +45,7 @@ class CovidApiExtract:
         return api_data_as_csv
     
     
-    def extract_workflow(self):
+    def extract_workflow(self) -> str:
         covid_api_response = self._make_http_request()
         daily_covid_csv = self._http_response_to_csv(covid_api_response)
         return daily_covid_csv
