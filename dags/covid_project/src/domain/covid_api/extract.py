@@ -3,7 +3,7 @@ import pandas as pd
 from src.models.api_extract_cte import ApiConstants, RequestMethod
 
 class CovidApiExtract:
-    def __init__(self, date: str, key: str) -> None:
+    def __init__(self, *, date: str, key: str) -> None:
         self.url = ApiConstants.URL
         self.host = ApiConstants.HOST
         self.key = key
