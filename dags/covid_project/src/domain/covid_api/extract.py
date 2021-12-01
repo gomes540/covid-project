@@ -11,6 +11,7 @@ class CovidApiExtract:
         self.querystring = self._build_querystring()
         self.headers = self._build_headers()
         
+        
     def _build_headers(self) -> dict:
         headers = {
             'x-rapidapi-host':self.host,
@@ -18,11 +19,13 @@ class CovidApiExtract:
         }
         return headers
     
+    
     def _build_querystring(self) -> dict:
         querystring = {
             'date':self.date
         }
         return querystring
+    
     
     def _make_http_request(self) -> requests.models.Response:
         response = requests.request(
@@ -33,6 +36,7 @@ class CovidApiExtract:
         )
         return response
     
+    
     def _http_response_to_csv(self, http_response: requests.models.Response) -> str:
         response_as_dict = http_response.json()
         api_data = response_as_dict["data"]
@@ -40,8 +44,8 @@ class CovidApiExtract:
         api_data_as_csv = api_data_as_df.to_csv(index=False)
         return api_data_as_csv
     
+    
     def extract_workflow(self):
         covid_api_response = self._make_http_request()
         daily_covid_csv = self._http_response_to_csv(covid_api_response)
         return daily_covid_csv
-            
