@@ -22,5 +22,9 @@ class BigqueryLoader:
         except ValueError as error:
             raise ServiceAccountException("Invalid Service Account") from error
     
-    def _build_client(self):
-        
+    def _build_client(self, credentials: str):
+        client = bigquery.Client(
+            credentials=self._build_bigquery_credentials(credentials),
+            project=self.project_id
+        )
+        return client
