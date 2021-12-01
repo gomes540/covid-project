@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 from src.models.api_extract_cte import ApiConstants, RequestMethod
 
 class CovidApiExtract:
@@ -31,5 +32,11 @@ class CovidApiExtract:
             params=self.querystring
         )
         return response
-        
+    
+    def _http_response_to_csv(self, http_response: requests.models.Response) -> str:
+        response_as_dict = http_response.json()
+        daily_cases = response_as_dict["data"]
+        df_daily_cases = pd.json_normalize(daily_cases)
+        csv_daily_cases = df_daily_cases.to_csv(index=False)
+        return csv_daily_cases
         
