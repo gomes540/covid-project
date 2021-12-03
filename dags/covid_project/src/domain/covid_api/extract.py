@@ -4,8 +4,8 @@ from src.models.api_extract_cte import ApiConstants, RequestMethod
 
 class CovidApiExtract:
     def __init__(self, *, date: str, key: str) -> None:
-        self.url = ApiConstants.URL
-        self.host = ApiConstants.HOST
+        self.url = ApiConstants.URL.value
+        self.host = ApiConstants.HOST.value
         self.key = key
         self.date = date
         self.querystring = self._build_querystring()
@@ -29,7 +29,7 @@ class CovidApiExtract:
     
     def _make_http_request(self) -> requests.models.Response:
         response = requests.request(
-            method=RequestMethod.GET,
+            method=RequestMethod.GET.value,
             url=self.url,
             headers=self.headers,
             params=self.querystring

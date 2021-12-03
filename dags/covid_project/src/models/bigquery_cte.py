@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from enum import Enum
 
-@dataclass
-class BQInfo:
+class BQInfo(Enum):
     DATATSET: str = "COVID_RAW"
     TABLE: str = "covid_data"
     

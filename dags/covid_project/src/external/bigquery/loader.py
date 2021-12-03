@@ -7,8 +7,8 @@ from covid_project.src.models.bigquery_cte import BQInfo
 class BigqueryLoader:
     def __init__(self, *, project_id: str, credentials: str) -> None:
         self.project_id = project_id
-        self.dataset = BQInfo.DATATSET,
-        self.table =  BQInfo.TABLE,
+        self.dataset = BQInfo.DATATSET.value,
+        self.table =  BQInfo.TABLE.value,
         self.client = self._build_client(credentials)
         
     def _build_bigquery_credentials(self, service_account_json: str):
