@@ -5,16 +5,17 @@ from covid_project.src.domain.exceptions.commons_exceptions import ServiceAccoun
 from covid_project.src.models.gcs_cte import FilePath, FileType
 
 class GCSLoader:
-    def __init__(self, *, project_id: str, csv_data: str, credentials: str) -> None:
+    def __init__(self, *, project_id: str, csv_data: str, credentials: str, date: str) -> None:
         self.project_id = project_id
         self.csv_data = csv_data
         self.bucket = FilePath.BUCKET.value
         self.filename = FilePath.FILENAME.value
         self.content_type = FileType.CONTENT_TYPE.value
+        self.date = date
         self.client = self._build_gcs_client(credentials=credentials)
         
     def _insert_day_in_filename(self, date: str) -> str:
-        filename_without_extension = FilePath.FILENAME.value[:-4]
+        filename_without_extension = self.filename[:-4]
         full_filename = f"{filename_without_extension}-on-{date}.csv"
         return full_filename
         
@@ -34,8 +35,8 @@ class GCSLoader:
         gcs_client = storage.Client(project=self.project_id, credentials=credentials)
         return gcs_client
     
-    def load_data(self, ingestion_date: str) -> None:
-        csv_filename = self._insert_day_in_filename(ingestion_date)
+    def load_data(self) -> None:
+        csv_filename = self._insert_day_in_filename(self.date)
         bucket = self.client.bucket(self.bucket)
         blob = bucket.blob(csv_filename)
         blob.upload_from_string(data=self.csv_data, content_type=self.content_type)

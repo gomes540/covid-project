@@ -9,5 +9,10 @@ def el_script(
 ) -> None:
     extract = CovidApiExtract(date=date, key=api_key)
     daily_covid_csv_data = extract.extract_workflow()
-    loader_to_gcs = GCSLoader(project_id=project_id, csv_data=daily_covid_csv_data, credentials=gcs_credential)
-    loader_to_gcs.load_data(ingestion_date=date)
+    loader_to_gcs = GCSLoader(
+        project_id=project_id,
+        csv_data=daily_covid_csv_data,
+        credentials=gcs_credential,
+        date=date
+    )
+    loader_to_gcs.load_data()
