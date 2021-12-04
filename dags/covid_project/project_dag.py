@@ -31,3 +31,5 @@ with DAG(
             "gcs_credential": Variable.get("gcs_service_account"),            
         }
     )
+    
+    start >> el_project >> end
