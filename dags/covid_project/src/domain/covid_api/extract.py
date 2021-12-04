@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from src.models.api_extract_cte import ApiConstants, RequestMethod
+from covid_project.src.models.api_extract_cte import ApiConstants, RequestMethod
 
 class CovidApiExtract:
     def __init__(self, *, date: str, key: str) -> None:
@@ -14,7 +14,7 @@ class CovidApiExtract:
         
     def _build_headers(self) -> dict:
         headers = {
-            'x-rapidapi-host':self.host,
+            'x-rapidapi-host': self.host,
             'x-rapidapi-key': self.key
         }
         return headers
