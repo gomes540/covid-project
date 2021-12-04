@@ -1,6 +1,7 @@
 from covid_project.src.domain.covid_api.extract import CovidApiExtract
 from covid_project.src.external.gcs.loader import GCSLoader
 
+
 def el_script(
     date: str,
     api_key: str,

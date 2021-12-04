@@ -17,9 +17,9 @@ with DAG(
     catchup=False,
 ) as dag:
     start = DummyOperator(task_id="start")
-    
+
     end = DummyOperator(task_id="end")
-    
+
     el_project = PythonOperator(
         task_id="covid_el",
         python_callable=el_script,
@@ -28,8 +28,8 @@ with DAG(
             "date": "{{ yesterday_ds }}",
             "api_key": Variable.get("covid_api_key"),
             "project_id": Variable.get("project_id"),
-            "gcs_credential": Variable.get("gcs_service_account"),            
+            "gcs_credential": Variable.get("gcs_service_account"),
         }
     )
-    
+
     start >> el_project >> end
