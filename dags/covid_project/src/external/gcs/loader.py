@@ -13,6 +13,12 @@ class GCSLoader:
         self.content_type = FileType.CONTENT_TYPE.value
         self.client = self._build_gcs_client(credentials=credentials)
         
+    def _insert_day_in_filename(self, date: str) -> str:
+        filename_without_extension = FilePath.FILENAME.value[:-4]
+        full_filename = f"{filename_without_extension}-on-{date}.csv"
+        return full_filename
+        
+        
     def _build_gcs_credentials(self, gcs_service_account: str):
         try:
             credentials_dict = json.loads(gcs_service_account)
@@ -28,7 +34,8 @@ class GCSLoader:
         gcs_client = storage.Client(project=self.project_id, credentials=credentials)
         return gcs_client
     
-    def load_data(self) -> None:
+    def load_data(self, ingestion_date: str) -> None:
+        csv_filename = self._insert_day_in_filename(ingestion_date)
         bucket = self.client.bucket(self.bucket)
-        blob = bucket.blob(self.filename)
+        blob = bucket.blob(csv_filename)
         blob.upload_from_string(data=self.csv_data, content_type=self.content_type)
