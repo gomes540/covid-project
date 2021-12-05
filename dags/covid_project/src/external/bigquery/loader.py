@@ -1,4 +1,5 @@
 import json
+import logging
 from google.oauth2 import service_account
 from google.cloud import bigquery
 from datetime import datetime
@@ -74,3 +75,5 @@ class BigqueryLoader:
             job_config=job_config
         )
         job.result()
+        logging.info(
+            f"csv: '{source_uri}' has beed loaded to table '{partitioned_table_id}' successfully")
