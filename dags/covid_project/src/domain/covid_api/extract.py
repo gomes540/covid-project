@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from covid_project.src.models.api_extract_cte import ApiConstants, RequestMethod
+from covid_project.src.domain.covid_api.api_extract_settings import ApiConstants, RequestMethod
 
 
 class CovidApiExtract:

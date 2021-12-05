@@ -2,7 +2,7 @@ import json
 from google.cloud import storage
 from google.oauth2 import service_account
 from covid_project.src.domain.exceptions.commons_exceptions import ServiceAccountException
-from covid_project.src.models.gcs_cte import FilePath, FileType
+from covid_project.src.external.gcs.gcs_settings import FileType, FilePath
 
 
 class GCSLoader:
