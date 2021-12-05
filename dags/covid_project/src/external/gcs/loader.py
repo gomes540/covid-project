@@ -1,4 +1,5 @@
 import json
+import logging
 from google.cloud import storage
 from google.oauth2 import service_account
 from covid_project.src.domain.exceptions.commons_exceptions import ServiceAccountException
@@ -50,3 +51,5 @@ class GCSLoader:
         blob = bucket.blob(csv_filename)
         blob.upload_from_string(
             data=self.csv_data, content_type=self.content_type)
+        logging.info(
+            f"Data '{csv_filename}' has been loaded successfully into bucket '{self.bucket}'")
