@@ -1,5 +1,7 @@
+from os import error
 import requests
 import pandas as pd
+import logging
 from covid_project.src.domain.covid_api.api_extract_settings import ApiConstants, RequestMethod
 
 
@@ -26,13 +28,17 @@ class CovidApiExtract:
         return querystring
 
     def _make_http_request(self) -> requests.models.Response:
-        response = requests.request(
-            method=RequestMethod.GET.value,
-            url=self.url,
-            headers=self.headers,
-            params=self.querystring
-        )
-        return response
+        try:
+            response = requests.request(
+                method=RequestMethod.GET.value,
+                url=self.url,
+                headers=self.headers,
+                params=self.querystring
+            )
+            logging.info("Extracted data successfully")
+            return response
+        except requests.exceptions.HTTPError as error:
+            raise SystemExit(error)
 
     def _http_response_to_csv(self, http_response: requests.models.Response) -> str:
         response_as_dict = http_response.json()
