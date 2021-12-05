@@ -37,6 +37,13 @@ class GCSLoader:
             project=self.project_id, credentials=credentials)
         return gcs_client
 
+    def get_filepath(self) -> str:
+        filepath = self._insert_day_in_filename(self.date)
+        return filepath
+
+    def get_bucket(self) -> str:
+        return self.bucket
+
     def load_data(self) -> None:
         csv_filename = self._insert_day_in_filename(self.date)
         bucket = self.client.bucket(self.bucket)
