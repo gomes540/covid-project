@@ -52,4 +52,4 @@ class GCSLoader:
         blob.upload_from_string(
             data=self.csv_data, content_type=self.content_type)
         logging.info(
-            f"Data '{csv_filename}' has been loaded successfully into bucket '{self.bucket}'")
+            f"Data '{csv_filename}' has been loaded successfully to bucket '{self.bucket}'")
