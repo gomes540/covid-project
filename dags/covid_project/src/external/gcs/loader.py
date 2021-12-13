@@ -58,5 +58,4 @@ class GCSLoader:
                 f"Data '{filename}' has been loaded successfully to bucket '{self.bucket}'"
             )
             gcs_uri_list.append(f"gs://{self.bucket}/{filename}")
-        print(gcs_uri_list)
         return gcs_uri_list
