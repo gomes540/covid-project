@@ -5,6 +5,10 @@ from airflow.operators.python import PythonOperator
 from airflow.models import Variable
 from covid_project.src.domain.covid_api.main import el_script
 
+
+start_date = '{{ yesterday_ds if dag_run.conf.get("start_date") == None else dag_run.conf.get("start_date") }}'
+end_date = '{{ yesterday_ds if dag_run.conf.get("end_date") == None else dag_run.conf.get("end_date") }}'
+
 default_args = {
     "owner": "Felipe Gomes",
     "start_date": datetime(2021, 1, 1),
@@ -25,7 +29,7 @@ with DAG(
         python_callable=el_script,
         provide_context=True,
         op_kwargs={
-            "date": "{{ yesterday_ds }}",
+            "date": start_date,
             "api_key": Variable.get("covid_api_key"),
             "project_id": Variable.get("project_id"),
             "gcs_credential": Variable.get("gcs_service_account"),
