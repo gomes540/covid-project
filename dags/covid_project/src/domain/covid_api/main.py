@@ -3,7 +3,7 @@ from covid_project.src.external.gcs.loader import GCSLoader
 from covid_project.src.external.bigquery.loader import BigqueryLoader
 
 
-def extract_and_load__to_gcs(
+def extract_and_load_to_gcs(
     start_date: str,
     end_date: str,
     api_key: str,

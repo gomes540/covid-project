@@ -3,7 +3,7 @@ from datetime import datetime
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.models import Variable
-from covid_project.src.domain.covid_api.main import extract_and_load__to_gcs, gcs_csv_file_to_bigquery
+from covid_project.src.domain.covid_api.main import extract_and_load_to_gcs, gcs_csv_file_to_bigquery
 
 
 start_date = '{{ yesterday_ds if dag_run.conf.get("start_date") == None else dag_run.conf.get("start_date") }}'
@@ -26,7 +26,7 @@ with DAG(
 
     extract_and_load_to_gcs = PythonOperator(
         task_id="covid_extract_and_load_to_gcs",
-        python_callable=extract_and_load__to_gcs,
+        python_callable=extract_and_load_to_gcs,
         provide_context=True,
         op_kwargs={
             "start_date": start_date,
