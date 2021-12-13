@@ -15,16 +15,14 @@ def el_script(
         end_date=end_date,
         key=api_key
     )
-    daily_covid_csv_data_list = api_extract.extract_workflow()
-    # loader_to_gcs = GCSLoader(
-    #     project_id=project_id,
-    #     csv_data_list=daily_covid_csv_data_list,
-    #     credentials=gcs_credential,
-    #     date=date
-    # )
-    # gcs_filepath = loader_to_gcs.get_filepath()
+    daily_covid_csv_data_dict = api_extract.extract_workflow()
+    loader_to_gcs = GCSLoader(
+        project_id=project_id,
+        csv_data_dict=daily_covid_csv_data_dict,
+        credentials=gcs_credential
+    )
     # bucket_name = loader_to_gcs.get_bucket()
-    # loader_to_gcs.load_data()
+    loader_to_gcs.load_data()
     # loader_to_bq = BigqueryLoader(
     #     project_id=project_id,
     #     credentials=gcs_credential,
