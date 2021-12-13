@@ -1,4 +1,3 @@
-from os import error
 import requests
 import pandas as pd
 import logging
