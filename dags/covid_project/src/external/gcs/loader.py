@@ -41,7 +41,8 @@ class GCSLoader:
     def get_bucket(self) -> str:
         return self.bucket
 
-    def load_data(self) -> None:
+    def load_data(self) -> list:
+        gcs_uri_list = []
         filename_and_data_dict = self._insert_day_in_filename_as_dict_keys(
             self.csv_data_dict)
         bucket = self.client.bucket(self.bucket)
@@ -51,3 +52,6 @@ class GCSLoader:
                 data=daily_data, content_type=self.content_type)
             logging.info(
                 f"Data '{filename}' has been loaded successfully to bucket '{self.bucket}'")
+            gcs_uri_list.append(f'gs://{self.bucket}/{filename}')
+        print(gcs_uri_list)
+        return gcs_uri_list

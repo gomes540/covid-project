@@ -1,5 +1,6 @@
 import json
 import logging
+import ast
 from google.oauth2 import service_account
 from google.cloud import bigquery
 from datetime import datetime
@@ -9,13 +10,16 @@ from covid_project.src.external.bigquery.schema import COVID_RAW_DATA_SCHEMA
 
 
 class BigqueryLoader:
-    def __init__(self, *, project_id: str, credentials: str, gcs_filepath: str, bucket_name: str) -> None:
+    def __init__(self, *, project_id: str, credentials: str, gcs_files_uri: str) -> None:
         self.project_id = project_id
         self.dataset = BQSettings.DATASET.value
         self.table = BQSettings.TABLE.value
         self.client = self._build_client(credentials)
-        self.gcs_filepath = gcs_filepath
-        self.bucket_name = bucket_name
+        self.gcs_files_uri = self._string_to_list(gcs_files_uri)
+
+    def _string_to_list(self, string_list: str):
+        list_file_uri = ast.literal_eval(string_list)
+        return list_file_uri
 
     def _build_bigquery_credentials(self, service_account_json: str):
         try:
@@ -48,32 +52,29 @@ class BigqueryLoader:
         table_id = f"{self.project_id}.{self.dataset}.{self.table}"
         return table_id
 
-    def _convert_data_format(self, date: str) -> str:
-        converted_date = datetime.strptime(date, "%Y-%m-%d").strftime("%Y%m%d")
-        return converted_date
-
-    def _build_table_destination_with_partition(self, *, table_id: str, date: str) -> str:
-        converted_date = self._convert_data_format(date=date)
-        partitioned_table_id = f"{table_id}${converted_date}"
+    def _build_table_destination_with_partition(self, *, table_id: str, partition: str) -> str:
+        partitioned_table_id = f"{table_id}${partition}"
         return partitioned_table_id
 
-    def _build_gcs_source_uri(self) -> str:
-        source_uri = f"gs://{self.bucket_name}/{self.gcs_filepath}"
-        return source_uri
+    def _get_date_from_gcs_uri(self, gcs_uri: str) -> str:
+        day = gcs_uri.split('.')[0][-10:]
+        partition = datetime.strptime(day, "%Y-%m-%d").strftime("%Y%m%d")
+        return partition
 
-    def load_data(self, *, date: str) -> None:
+    def load_data(self) -> None:
         table_id = self._build_table_destination()
-        source_uri = self._build_gcs_source_uri()
-        partitioned_table_id = self._build_table_destination_with_partition(
-            table_id=table_id,
-            date=date
-        )
-        job_config = self._build_job_config()
-        job = self.client.load_table_from_uri(
-            source_uris=source_uri,
-            destination=partitioned_table_id,
-            job_config=job_config
-        )
-        job.result()
-        logging.info(
-            f"csv: '{source_uri}' has beed loaded to table '{partitioned_table_id}' successfully")
+        for file_uri in self.gcs_files_uri:
+            partition = self._get_date_from_gcs_uri(file_uri)
+            partitioned_table_id = self._build_table_destination_with_partition(
+                table_id=table_id,
+                partition=partition
+            )
+            job_config = self._build_job_config()
+            job = self.client.load_table_from_uri(
+                source_uris=file_uri,
+                destination=partitioned_table_id,
+                job_config=job_config
+            )
+            job.result()
+            logging.info(
+                f"csv: '{file_uri}' has beed loaded to table '{partitioned_table_id}' successfully")
