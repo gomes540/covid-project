@@ -3,7 +3,10 @@ from datetime import datetime
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.models import Variable
-from covid_project.src.domain.covid_api.main import extract_and_load_to_gcs, gcs_csv_file_to_bigquery
+from covid_project.src.domain.covid_api.main import (
+    extract_and_load_to_gcs,
+    gcs_csv_file_to_bigquery,
+)
 
 
 start_date = '{{ yesterday_ds if dag_run.conf.get("start_date") == None else dag_run.conf.get("start_date") }}'
@@ -33,8 +36,10 @@ with DAG(
             "end_date": end_date,
             "api_key": Variable.get("covid_api_key"),
             "project_id": Variable.get("project_id"),
-            "covid_project_service_account": Variable.get("covid_project_service_account_secret"),
-        }
+            "covid_project_service_account": Variable.get(
+                "covid_project_service_account_secret"
+            ),
+        },
     )
 
     gcs_files_uri = "{{ task_instance.xcom_pull(task_ids='covid_extract_and_load_to_gcs', dag_id='elt_covid_project', key='return_value') }}"
@@ -46,8 +51,10 @@ with DAG(
         op_kwargs={
             "gcs_files_uri": gcs_files_uri,
             "project_id": Variable.get("project_id"),
-            "covid_project_service_account": Variable.get("covid_project_service_account_secret"),
-        }
+            "covid_project_service_account": Variable.get(
+                "covid_project_service_account_secret"
+            ),
+        },
     )
 
     start >> extract_and_load_to_gcs >> raw_gcs_csv_file_to_bigquery >> end
