@@ -7,9 +7,9 @@ from covid_project.src.external.gcs.gcs_settings import FileType, FilePath
 
 
 class GCSLoader:
-    def __init__(self, *, project_id: str, csv_data: str, credentials: str, date: str) -> None:
+    def __init__(self, *, project_id: str, csv_data_list: list, credentials: str, date: str) -> None:
         self.project_id = project_id
-        self.csv_data = csv_data
+        self.csv_data_list = csv_data_list
         self.bucket = FilePath.BUCKET.value
         self.filename = FilePath.FILENAME.value
         self.content_type = FileType.CONTENT_TYPE.value

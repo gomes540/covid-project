@@ -29,7 +29,8 @@ with DAG(
         python_callable=el_script,
         provide_context=True,
         op_kwargs={
-            "date": start_date,
+            "start_date": start_date,
+            "end_date": end_date,
             "api_key": Variable.get("covid_api_key"),
             "project_id": Variable.get("project_id"),
             "gcs_credential": Variable.get("gcs_service_account"),
