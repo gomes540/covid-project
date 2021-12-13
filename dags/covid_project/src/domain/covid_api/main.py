@@ -8,7 +8,7 @@ def extract_and_load__to_gcs(
     end_date: str,
     api_key: str,
     project_id: str,
-    gcs_credential: str
+    covid_project_service_account: str
 ) -> list:
     api_extract = CovidApiExtract(
         start_date=start_date,
@@ -19,7 +19,7 @@ def extract_and_load__to_gcs(
     loader_to_gcs = GCSLoader(
         project_id=project_id,
         csv_data_dict=daily_covid_csv_data_dict,
-        credentials=gcs_credential
+        credentials=covid_project_service_account
     )
     gcs_uri_list = loader_to_gcs.load_data()
     return gcs_uri_list
@@ -27,12 +27,12 @@ def extract_and_load__to_gcs(
 
 def gcs_csv_file_to_bigquery(
     project_id: str,
-    gcs_credential: str,
+    covid_project_service_account: str,
     gcs_files_uri: str,
 ) -> None:
     loader_to_bq = BigqueryLoader(
         project_id=project_id,
-        credentials=gcs_credential,
+        credentials=covid_project_service_account,
         gcs_files_uri=gcs_files_uri,
     )
     loader_to_bq.load_data()

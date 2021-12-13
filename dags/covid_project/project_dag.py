@@ -33,7 +33,7 @@ with DAG(
             "end_date": end_date,
             "api_key": Variable.get("covid_api_key"),
             "project_id": Variable.get("project_id"),
-            "gcs_credential": Variable.get("gcs_service_account"),
+            "covid_project_service_account": Variable.get("covid_project_service_account_secret"),
         }
     )
 
@@ -46,7 +46,7 @@ with DAG(
         op_kwargs={
             "gcs_files_uri": gcs_files_uri,
             "project_id": Variable.get("project_id"),
-            "gcs_credential": Variable.get("gcs_service_account"),
+            "covid_project_service_account": Variable.get("covid_project_service_account_secret"),
         }
     )
 
