@@ -4,13 +4,17 @@ import ast
 from google.oauth2 import service_account
 from google.cloud import bigquery
 from datetime import datetime
-from covid_project.src.domain.exceptions.commons_exceptions import ServiceAccountException
+from covid_project.src.domain.exceptions.commons_exceptions import (
+    ServiceAccountException,
+)
 from covid_project.src.external.bigquery.bq_settings import BQSettings
 from covid_project.src.external.bigquery.schema import COVID_RAW_DATA_SCHEMA
 
 
 class BigqueryLoader:
-    def __init__(self, *, project_id: str, credentials: str, gcs_files_uri: str) -> None:
+    def __init__(
+        self, *, project_id: str, credentials: str, gcs_files_uri: str
+    ) -> None:
         self.project_id = project_id
         self.dataset = BQSettings.DATASET.value
         self.table = BQSettings.TABLE.value
@@ -34,7 +38,7 @@ class BigqueryLoader:
     def _build_client(self, credentials: str):
         client = bigquery.Client(
             credentials=self._build_bigquery_credentials(credentials),
-            project=self.project_id
+            project=self.project_id,
         )
         return client
 
@@ -44,7 +48,7 @@ class BigqueryLoader:
             time_partitioning=bigquery.table.TimePartitioning(field="date"),
             schema=COVID_RAW_DATA_SCHEMA,
             skip_leading_rows=1,
-            write_disposition="WRITE_TRUNCATE"
+            write_disposition="WRITE_TRUNCATE",
         )
         return job_config
 
@@ -52,12 +56,14 @@ class BigqueryLoader:
         table_id = f"{self.project_id}.{self.dataset}.{self.table}"
         return table_id
 
-    def _build_table_destination_with_partition(self, *, table_id: str, partition: str) -> str:
+    def _build_table_destination_with_partition(
+        self, *, table_id: str, partition: str
+    ) -> str:
         partitioned_table_id = f"{table_id}${partition}"
         return partitioned_table_id
 
     def _get_date_from_gcs_uri(self, gcs_uri: str) -> str:
-        day = gcs_uri.split('.')[0][-10:]
+        day = gcs_uri.split(".")[0][-10:]
         partition = datetime.strptime(day, "%Y-%m-%d").strftime("%Y%m%d")
         return partition
 
@@ -66,15 +72,15 @@ class BigqueryLoader:
         for file_uri in self.gcs_files_uri:
             partition = self._get_date_from_gcs_uri(file_uri)
             partitioned_table_id = self._build_table_destination_with_partition(
-                table_id=table_id,
-                partition=partition
+                table_id=table_id, partition=partition
             )
             job_config = self._build_job_config()
             job = self.client.load_table_from_uri(
                 source_uris=file_uri,
                 destination=partitioned_table_id,
-                job_config=job_config
+                job_config=job_config,
             )
             job.result()
             logging.info(
-                f"csv: '{file_uri}' has beed loaded to table '{partitioned_table_id}' successfully")
+                f"csv: '{file_uri}' has beed loaded to table '{partitioned_table_id}' successfully"
+            )

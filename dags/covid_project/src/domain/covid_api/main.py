@@ -8,18 +8,14 @@ def extract_and_load_to_gcs(
     end_date: str,
     api_key: str,
     project_id: str,
-    covid_project_service_account: str
+    covid_project_service_account: str,
 ) -> list:
-    api_extract = CovidApiExtract(
-        start_date=start_date,
-        end_date=end_date,
-        key=api_key
-    )
+    api_extract = CovidApiExtract(start_date=start_date, end_date=end_date, key=api_key)
     daily_covid_csv_data_dict = api_extract.extract_workflow()
     loader_to_gcs = GCSLoader(
         project_id=project_id,
         csv_data_dict=daily_covid_csv_data_dict,
-        credentials=covid_project_service_account
+        credentials=covid_project_service_account,
     )
     gcs_uri_list = loader_to_gcs.load_data()
     return gcs_uri_list
