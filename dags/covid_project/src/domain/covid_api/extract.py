@@ -54,7 +54,7 @@ class CovidApiExtract:
         for http_response in http_response_list:
             response_as_dict = http_response.json()
             api_data = response_as_dict["data"]
-            api_data_as_df = pd.json_normalize(api_data)
+            api_data_as_df = pd.DataFrame.from_dict(api_data)
             api_data_as_csv = api_data_as_df.to_csv(index=False)
             api_data_as_csv_list.append(api_data_as_csv)
         return api_data_as_csv_list

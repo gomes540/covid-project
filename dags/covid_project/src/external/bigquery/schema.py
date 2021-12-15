@@ -12,10 +12,5 @@ COVID_RAW_DATA_SCHEMA = [
     SchemaField("active", "INT64"),
     SchemaField("active_diff", "INT64"),
     SchemaField("fatality_rate", "FLOAT64"),
-    SchemaField("region_iso", "STRING"),
-    SchemaField("region_name", "STRING"),
-    SchemaField("region_province", "STRING"),
-    SchemaField("region_lat", "FLOAT64"),
-    SchemaField("region_long", "FLOAT64"),
-    SchemaField("region_cities", "STRING"),
+    SchemaField("region", "STRING"),
 ]
