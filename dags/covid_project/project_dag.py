@@ -22,6 +22,9 @@ with DAG(
     dag_id="elt_covid_project",
     default_args=default_args,
     catchup=False,
+    schedule_interval="30 4 * * *",
+    description="Extract data from COVID API, save in GCS and load to Bigquery",
+    tags=["covid_project"],
 ) as dag:
     start = DummyOperator(task_id="start")
 
