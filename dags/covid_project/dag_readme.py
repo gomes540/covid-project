@@ -29,6 +29,7 @@ API: https://rapidapi.com/axisbits-axisbits-default/api/covid-19-statistics/
     
     - `"end_date":"YYYY-DD-MM"`
     
+    
     If `start_date` and `end_date` are passed set, the DAG is going to extract data from API from `start_date` to `end_date`
 
     
