@@ -3,6 +3,7 @@ from datetime import datetime
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.models import Variable
+from covid_project.dag_readme import docs
 from covid_project.src.domain.covid_api.main import (
     extract_and_load_to_gcs,
     gcs_csv_file_to_bigquery,
@@ -26,6 +27,8 @@ with DAG(
     description="Extract data from COVID API, save in GCS and load to Bigquery",
     tags=["covid_project"],
 ) as dag:
+    dag.doc_md = docs
+
     start = DummyOperator(task_id="start")
 
     end = DummyOperator(task_id="end")
