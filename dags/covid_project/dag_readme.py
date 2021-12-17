@@ -36,7 +36,7 @@ API: https://rapidapi.com/axisbits-axisbits-default/api/covid-19-statistics/
     Example:
     ```
     {
-        "start_date":"2021-12-01, "end_date":"2021-12-10"
+        "start_date":"2021-12-01", "end_date":"2021-12-10"
     }
     ```
 
