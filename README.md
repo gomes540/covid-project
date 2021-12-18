@@ -1,13 +1,13 @@
 # Covid-19 ELT Project
 
-This project consists in create a Data Lake and a Data Warehouse extracting daily data from an Covid-19 API. It involves tecnologies that are commonly used in Data Enginnering.
+This project consists in create a Data Lake and a Data Warehouse extracting daily data from a Covid-19 API. It involves technologies that are commonly used in Data Enginnering.
 This repository contains only that Extract and Load part of the ELT, you can look the Transformation part in https://github.com/gomes540/dbt-projects.
 
 ## Usage
 
 1. - Set up the Airflow
 
-NOTE: I recommend you to access the Airflow Documentation to set up the airflow:
+NOTE: I recommend you to access the Airflow Documentation to set up the Airflow:
 
 `https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html`
 
@@ -23,7 +23,7 @@ NOTE: I recommend you to access the Airflow Documentation to set up the airflow:
 
  - You can see the username and the password in the fields `_AIRFLOW_WWW_USER_USERNAME` and `_AIRFLOW_WWW_USER_PASSWORD` in the `docker-compose.yml` file
 
-     1.1 - Variables in airflow
+     1.1 - Variables in Airflow
      
       - `covid_api_key`: your api key
 
@@ -65,7 +65,9 @@ NOTE: I recommend you to access the Airflow Documentation to set up the airflow:
      
      The project will use this Dataset to create a table called `covid-data` which contains the raw API Covid data.
      
-Now you can run the dag `elt_covid_project`!
+Now you can run the DAG `elt_covid_project`!
+
+![image](https://user-images.githubusercontent.com/72705868/146657295-0a8dd66f-8515-410a-bab9-c8570e7a5e63.png)
 
  
 
