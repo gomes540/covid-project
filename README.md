@@ -1,6 +1,6 @@
 # Covid-19 ELT Project
 
-This project consists in create a Data Lake and a Data Warehouse extracting daily data from a Covid-19 API. It involves technologies that are commonly used in Data Enginnering.
+This project consists in creating a Data Lake and a Data Warehouse, extracting daily data from a Covid-19 API. It involves technologies that are commonly used in Data Enginnering.
 This repository contains only that Extract and Load part of the ELT, you can look the Transformation part in https://github.com/gomes540/dbt-projects.
 
 ## Usage
